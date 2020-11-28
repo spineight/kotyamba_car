@@ -16,6 +16,11 @@ NOTE: To compile programs with wiringPi, you need to add:
   to your compile line(s).
 
 
+
+## pigpio
+http://abyz.me.uk/rpi/pigpio/index.html - another library
+https://github.com/Steve136/RasPi-DC-Motor-Class
+
 ## using wiringPi
 ```c++
 #include <wiringPi.h>

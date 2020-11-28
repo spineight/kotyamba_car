@@ -1,15 +1,11 @@
 #include <motor.hpp>
 #include <iostream>
-#include <wiringPi.h>
 
 // http://www.cs.ukzn.ac.za/~hughm/os/notes/ncurses.html
 #include <curses.h>
 
 int main() {
-  if(wiringPiSetupGpio() == -1) {
-    std::cerr << "failed to setup WiringPi\n";
-    exit(1);
-  }
+
   const char THROTTLE_MOTOR_pin0 = 7;
   const char THROTTLE_MOTOR_pin1 = 8;
   const char THROTTLE_MOTOR_EnA_pin = 1;
@@ -18,8 +14,11 @@ int main() {
   const char STEERING_MOTOR_pin1 = 10;
   const char STEERING_MOTOR_EnB_pin = 11;
 
-  kotyamba::Motor throttle_motor(THROTTLE_MOTOR_pin0, THROTTLE_MOTOR_pin1, THROTTLE_MOTOR_EnA_pin);
-  kotyamba::Motor steering_motor(STEERING_MOTOR_pin0, STEERING_MOTOR_pin1, STEERING_MOTOR_EnB_pin);
+  const size_t PWM_RANGE = 255;
+  const size_t FREQUENCY = 20000;
+
+  kotyamba::Motor throttle_motor(THROTTLE_MOTOR_pin0, THROTTLE_MOTOR_pin1, THROTTLE_MOTOR_EnA_pin, PWM_RANGE, FREQUENCY);
+  kotyamba::Motor steering_motor(STEERING_MOTOR_pin0, STEERING_MOTOR_pin1, STEERING_MOTOR_EnB_pin, PWM_RANGE, FREQUENCY);
 
   bool is_running = true;
 
@@ -36,12 +35,13 @@ int main() {
 
   while(is_running) {
     const char command = tolower(getch()); // ncurses
-    const double duty_cycle = 0.5;
+    const double throttle_duty_cycle = PWM_RANGE;
+    const double steering_duty_cycle = PWM_RANGE * 0.8;
     switch (command) {
-      case 'w': throttle_motor.rotate(duty_cycle, kotyamba::Motor::FORWARD); break;
-      case 's': throttle_motor.rotate(duty_cycle, kotyamba::Motor::BACKWARD); break;
-      case 'a': steering_motor.rotate(duty_cycle, kotyamba::Motor::FORWARD); break;
-      case 'd': steering_motor.rotate(duty_cycle, kotyamba::Motor::BACKWARD); break;
+      case 'w': throttle_motor.rotate(throttle_duty_cycle, kotyamba::Motor::FORWARD); break;
+      case 's': throttle_motor.rotate(throttle_duty_cycle, kotyamba::Motor::BACKWARD); break;
+      case 'a': steering_motor.rotate(steering_duty_cycle, kotyamba::Motor::FORWARD); break;
+      case 'd': steering_motor.rotate(steering_duty_cycle, kotyamba::Motor::BACKWARD); break;
       case 'b': steering_motor.stop();
       throttle_motor.stop();
       break;
@@ -54,6 +54,10 @@ int main() {
       break;
     }
   }
-  endwin();  // Free memory switch to ordinary mode (non ncurses)
+  struct ScreenGuard {
+
+    ~ScreenGuard() { endwin(); };  // Free memory switch to ordinary mode (non ncurses)
+  } guard;
+
   return 0;
 }

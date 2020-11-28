@@ -1,0 +1,2 @@
+https://electronics.stackexchange.com/questions/242293/is-there-an-ideal-pwm-frequency-for-dc-brush-motors
+https://www.robotshop.com/community/blog/show/fundamental-of-pwm-speed-control-for-brushed-dc-motor-1
