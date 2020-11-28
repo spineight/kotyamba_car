@@ -1,6 +1,6 @@
 #pragma once
 
-#include <motor.hpp>
+#include <motor_controller.hpp>
 
 #include <pigpio.h>
 
@@ -12,7 +12,7 @@
 namespace kotyamba {
   static bool was_init_function_called = false;
 
-  Motor::Motor(char direction_pin_0, char direction_pin_1, char speed_pin, size_t pwm_range, size_t frequency)
+  MotorController::MotorController(char direction_pin_0, char direction_pin_1, char speed_pin, size_t pwm_range, size_t frequency)
           : direction_pin_0(direction_pin_0),
             direction_pin_1(direction_pin_1),
             speed_pin(speed_pin),
@@ -97,7 +97,7 @@ namespace kotyamba {
       exit(1);
     }
   }
-  Motor::~Motor() {
+  MotorController::~MotorController() {
     gpioTerminate();
   }
 
@@ -106,7 +106,7 @@ namespace kotyamba {
    * @param duty_cycle [0..1] - fraction of power (1 - 100%, 0 - 0%)
    * @param d - FORWARD, BACKWARD
    */
-  void Motor::rotate(size_t duty_cycle, Direction d) {
+  void MotorController::rotate(size_t duty_cycle, Direction d) {
     // enable forward/backward rotation
     if(d == Direction::FORWARD) {
       gpioWrite(direction_pin_0, 1);
@@ -128,11 +128,11 @@ namespace kotyamba {
     }
   }
 
-  void Motor::stop() {
+  void MotorController::stop() {
     gpioPWM(speed_pin, 0);
   }
 
-  void Motor::emergency_stop() {
+  void MotorController::emergency_stop() {
     gpioPWM(speed_pin, 0);
     gpioWrite(direction_pin_0, 0);
     gpioWrite(direction_pin_1, 0);

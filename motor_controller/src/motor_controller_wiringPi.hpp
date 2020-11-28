@@ -1,6 +1,6 @@
 #pragma once
 
-#include <motor.hpp>
+#include <motor_controller.hpp>
 
 #include <wiringPi.h>
 #include <softPwm.h>
@@ -10,7 +10,7 @@
 namespace kotyamba {
   static bool was_init_function_called = false;
 
-  Motor::Motor(char direction_pin_0, char direction_pin_1, char speed_pin, size_t pwm_range, size_t frequency)
+  motor_controller::motor_controller(char direction_pin_0, char direction_pin_1, char speed_pin, size_t pwm_range, size_t frequency)
           : direction_pin_0(direction_pin_0),
             direction_pin_1(direction_pin_1),
             speed_pin(speed_pin),
@@ -53,14 +53,14 @@ namespace kotyamba {
     //    There is currently no way to disable softPWM on a pin while the program in running.
     //    You need to keep your program running to maintain the PWM output!
   }
-  Motor::~Motor() {}
+  motor_controller::~motor_controller() {}
 
   /*!
    *
    * @param duty_cycle [0..1] - fraction of power (1 - 100%, 0 - 0%)
    * @param d - FORWARD, BACKWARD
    */
-  void Motor::rotate(size_t duty_cycle, Direction d) {
+  void motor_controller::rotate(size_t duty_cycle, Direction d) {
     // enable forward/backward rotation
     if(d == Direction::FORWARD) {
       digitalWrite(direction_pin_0, HIGH);
@@ -75,11 +75,11 @@ namespace kotyamba {
     softPwmWrite(speed_pin, 100);
   }
 
-  void Motor::stop() {
+  void motor_controller::stop() {
     softPwmWrite(speed_pin, 0);
   }
 
-  void Motor::emergency_stop() {
+  void motor_controller::emergency_stop() {
     softPwmWrite(speed_pin, 0);
     digitalWrite(direction_pin_0, LOW);
     digitalWrite(direction_pin_1, LOW);

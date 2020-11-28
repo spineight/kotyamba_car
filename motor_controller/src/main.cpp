@@ -1,4 +1,4 @@
-#include <motor.hpp>
+#include <motor_controller.hpp>
 #include <iostream>
 
 // http://www.cs.ukzn.ac.za/~hughm/os/notes/ncurses.html
@@ -17,8 +17,8 @@ int main() {
   const size_t PWM_RANGE = 255;
   const size_t FREQUENCY = 20000;
 
-  kotyamba::Motor throttle_motor(THROTTLE_MOTOR_pin0, THROTTLE_MOTOR_pin1, THROTTLE_MOTOR_EnA_pin, PWM_RANGE, FREQUENCY);
-  kotyamba::Motor steering_motor(STEERING_MOTOR_pin0, STEERING_MOTOR_pin1, STEERING_MOTOR_EnB_pin, PWM_RANGE, FREQUENCY);
+  kotyamba::MotorController throttle_motor(THROTTLE_MOTOR_pin0, THROTTLE_MOTOR_pin1, THROTTLE_MOTOR_EnA_pin, PWM_RANGE, FREQUENCY);
+  kotyamba::MotorController steering_motor(STEERING_MOTOR_pin0, STEERING_MOTOR_pin1, STEERING_MOTOR_EnB_pin, PWM_RANGE, FREQUENCY);
 
   bool is_running = true;
 
@@ -38,10 +38,10 @@ int main() {
     const double throttle_duty_cycle = PWM_RANGE;
     const double steering_duty_cycle = PWM_RANGE * 0.8;
     switch (command) {
-      case 'w': throttle_motor.rotate(throttle_duty_cycle, kotyamba::Motor::FORWARD); break;
-      case 's': throttle_motor.rotate(throttle_duty_cycle, kotyamba::Motor::BACKWARD); break;
-      case 'a': steering_motor.rotate(steering_duty_cycle, kotyamba::Motor::FORWARD); break;
-      case 'd': steering_motor.rotate(steering_duty_cycle, kotyamba::Motor::BACKWARD); break;
+      case 'w': throttle_motor.rotate(throttle_duty_cycle, kotyamba::MotorController::FORWARD); break;
+      case 's': throttle_motor.rotate(throttle_duty_cycle, kotyamba::MotorController::BACKWARD); break;
+      case 'a': steering_motor.rotate(steering_duty_cycle, kotyamba::MotorController::FORWARD); break;
+      case 'd': steering_motor.rotate(steering_duty_cycle, kotyamba::MotorController::BACKWARD); break;
       case 'b': steering_motor.stop();
       throttle_motor.stop();
       break;
