@@ -4,3 +4,6 @@
 [submodule "extern/pigpio"]
 	path = extern/pigpio
 	url = https://github.com/joan2937/pigpio.git
+[submodule "extern/kotyamba_joystick"]
+	path = extern/kotyamba_joystick
+	url = git@github.com:spineight/kotyamba_joystick.git

@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.16)
 
-project(motor)
+project(motor_controller)
 
 list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/cmake")
 list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/../extern/pigpio/util")
@@ -19,7 +19,9 @@ add_library(kotyamba::motor_controller ALIAS motor_controller)
 set_target_properties(motor_controller PROPERTIES LINKER_LANGUAGE CXX)
 
 target_compile_features(motor_controller PUBLIC cxx_std_17)
-target_include_directories(motor_controller PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/include)
+target_include_directories(motor_controller PUBLIC
+    ${CMAKE_CURRENT_SOURCE_DIR}/include
+)
 
 # http://abyz.me.uk/rpi/pigpio/index.html
 option(WITH_WIRINGPI "For controlling GPIO on Raspberry use WiringPi library" OFF)
