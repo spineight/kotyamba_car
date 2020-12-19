@@ -10,6 +10,7 @@ orange AIN2
 yellow AIN1
 
 purple - STBY
+First, there is a standby pin, if this pin is held LOW, the motors are basically disconnected from power.
 
 
 ### Specification:
