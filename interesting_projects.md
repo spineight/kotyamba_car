@@ -4,6 +4,8 @@ https://www.hackster.io/dmitrywat/bittle-teleoperation-with-ros-and-raspberry-pi
 
 https://aws.amazon.com/blogs/compute/building-a-raspberry-pi-telepresence-robot-using-serverless-part-1/
 
+http://wiki.ros.org/navigation
+
 
 words of interest:
 teleoperation

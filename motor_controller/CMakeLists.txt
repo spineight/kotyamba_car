@@ -1,16 +1,18 @@
 cmake_minimum_required(VERSION 3.16)
-
 project(motor_controller)
 
 list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/cmake")
+
+# for Findpigpio.cmake
+# `Findpigpio.cmake` is a script used by CMake to find out where the pigpio header and library files are located.
 list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/../extern/pigpio/util")
 
 set(HEADERS
-        ${CMAKE_CURRENT_SOURCE_DIR}/include/motor_controller.hpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/include/motor_controller.hpp
 )
 
 set(SOURCES
-        ${CMAKE_CURRENT_SOURCE_DIR}/src/motor_controller.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/motor_controller.cpp
 )
 
 
@@ -31,12 +33,14 @@ option(WITH_PIGPIO "For controlling GPIO on Raspberry use pigpio library" ON)
 if ((WITH_WIRINGPI AND WITH_PIGPIO) OR (NOT WITH_WIRINGPI AND NOT WITH_PIGPIO))
     message(FATAL "ONLY one gpio library should be ON. Set WITH_WIRINGPI or WITH_PIGPIO to ON")
 elseif(WITH_WIRINGPI)
+    message(STATUS "Using wiringPI library for the motor controller")
     # Locate libraries and headers
     find_package(WiringPi REQUIRED)
     target_include_directories(motor_controller PUBLIC ${WIRINGPI_INCLUDE_DIRS})
     target_link_libraries(motor_controller PUBLIC ${WIRINGPI_LIBRARIES} crypt)
     target_compile_definitions(motor_controller PUBLIC WITH_WIRINGPI=1)
 elseif(WITH_PIGPIO)
+    message(STATUS "Using pigpio library for the motor controller")
     # https://github.com/joan2937/pigpio/blob/master/util/Findpigpio.cmake
     find_package(pigpio REQUIRED)
     target_link_libraries(motor_controller PUBLIC ${pigpio_LIBRARY})

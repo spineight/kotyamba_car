@@ -35,8 +35,8 @@ int main() {
 
   while(is_running) {
     const char command = tolower(getch()); // ncurses
-    const double throttle_duty_cycle = PWM_RANGE;
-    const double steering_duty_cycle = PWM_RANGE * 0.8;
+    const double throttle_duty_cycle = 1;
+    const double steering_duty_cycle = 0.8 * 1;
     switch (command) {
       case 'w': throttle_motor.rotate(throttle_duty_cycle, kotyamba::MotorController::FORWARD); break;
       case 's': throttle_motor.rotate(throttle_duty_cycle, kotyamba::MotorController::BACKWARD); break;

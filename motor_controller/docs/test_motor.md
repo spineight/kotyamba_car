@@ -7,3 +7,7 @@ apt-cache search ncurses
 sudo apt-get install libncurses6
 sudo apt-get install libncurses-dev
 ```
+
+commands:ya
+b - power break (wheels are locked)
+x - stop (wheels are free )
