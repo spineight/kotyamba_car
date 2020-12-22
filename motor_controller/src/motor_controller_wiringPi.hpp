@@ -60,15 +60,17 @@ namespace kotyamba {
    * @param duty_cycle [0..1] - fraction of power (1 - 100%, 0 - 0%)
    * @param d - FORWARD, BACKWARD
    */
-  void MotorController::rotate(double duty_cycle, Direction d) {
+  void MotorController::rotate(double duty_cycle, State new_state) {
     // enable forward/backward rotation
-    if(d == Direction::FORWARD) {
+    if(new_state == State::FORWARD_ROTATION && state != FORWARD_ROTATION) {
       digitalWrite(direction_pin_0, HIGH);
       digitalWrite(direction_pin_1, LOW);
+      state = FORWARD_ROTATION;
     }
-    else {
+    else if(new_state == State::BACKWARD_ROTATION && state != BACKWARD_ROTATION) {
       digitalWrite(direction_pin_0, LOW);
       digitalWrite(direction_pin_1, HIGH);
+      state = BACKWARD_ROTATION;
     }
     // For the lone PWM pin, you can use pwmWrite([pin], [0-1023]) to set it to a value between 0 and 1024.
     softPwmWrite(speed_pin, pwm_range * duty_cycle);
@@ -76,11 +78,13 @@ namespace kotyamba {
 
   void MotorController::stop() {
     softPwmWrite(speed_pin, 0);
+    state = NO_ROTATION;
   }
 
   void MotorController::emergency_stop() {
     softPwmWrite(speed_pin, 0);
     digitalWrite(direction_pin_0, LOW);
     digitalWrite(direction_pin_1, LOW);
+    state = NO_ROTATION;
   }
 }

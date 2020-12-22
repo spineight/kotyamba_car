@@ -38,10 +38,10 @@ int main() {
     const double throttle_duty_cycle = 1;
     const double steering_duty_cycle = 0.8 * 1;
     switch (command) {
-      case 'w': throttle_motor.rotate(throttle_duty_cycle, kotyamba::MotorController::FORWARD); break;
-      case 's': throttle_motor.rotate(throttle_duty_cycle, kotyamba::MotorController::BACKWARD); break;
-      case 'a': steering_motor.rotate(steering_duty_cycle, kotyamba::MotorController::FORWARD); break;
-      case 'd': steering_motor.rotate(steering_duty_cycle, kotyamba::MotorController::BACKWARD); break;
+      case 'w': throttle_motor.rotate(throttle_duty_cycle, kotyamba::MotorController::FORWARD_ROTATION); break;
+      case 's': throttle_motor.rotate(throttle_duty_cycle, kotyamba::MotorController::BACKWARD_ROTATION); break;
+      case 'a': steering_motor.rotate(steering_duty_cycle, kotyamba::MotorController::FORWARD_ROTATION); break;
+      case 'd': steering_motor.rotate(steering_duty_cycle, kotyamba::MotorController::BACKWARD_ROTATION); break;
       case 'b': steering_motor.stop();
       throttle_motor.stop();
       break;

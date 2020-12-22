@@ -20,7 +20,8 @@ namespace kotyamba {
             direction_pin_1(direction_pin_1),
             speed_pin(speed_pin),
             pwm_range(pwm_range),
-            frequency(frequency)
+            frequency(frequency),
+            state(NO_ROTATION)
   {
     if (gpioInitialise() < 0) {
       std::cerr << "failed to setup WiringPi\n";
@@ -109,17 +110,19 @@ namespace kotyamba {
    * @param duty_cycle [0..1] - fraction of power (1 - 100%, 0 - 0%)
    * @param d - FORWARD, BACKWARD
    */
-  void MotorController::rotate(double duty_cycle, Direction d) {
+  void MotorController::rotate(double duty_cycle, State new_state) {
     assert(0 <= duty_cycle && duty_cycle <= 1);
-    assert(25 <= pwm_range && pwm_range <= 625)
+    assert(25 <= pwm_range && pwm_range <= 625);
     // enable forward/backward rotation
-    if(d == Direction::FORWARD) {
+    if(new_state == State::FORWARD_ROTATION && state != FORWARD_ROTATION) {
       gpioWrite(direction_pin_0, 1);
       gpioWrite(direction_pin_1, 0);
+      state = FORWARD_ROTATION;
     }
-    else {
+    else if(new_state == State::BACKWARD_ROTATION && state != BACKWARD_ROTATION){
       gpioWrite(direction_pin_0, 0);
       gpioWrite(direction_pin_1, 1);
+      state = BACKWARD_ROTATION;
     }
     // For the lone PWM pin, you can use pwmWrite([pin], [0-1023]) to set it to a value between 0 and 1024.
     const int ret = gpioPWM(speed_pin, pwm_range * duty_cycle);
@@ -131,15 +134,18 @@ namespace kotyamba {
       std::cerr << "PI_BAD_DUTYCYCLE\n";
       exit(1);
     }
+//    std::cout << pwm_range * duty_cycle << '\n';
   }
 
   void MotorController::stop() {
     gpioPWM(speed_pin, 0);
+    state = NO_ROTATION;
   }
 
   void MotorController::emergency_stop() {
     gpioPWM(speed_pin, 0);
     gpioWrite(direction_pin_0, 0);
     gpioWrite(direction_pin_1, 0);
+    state = NO_ROTATION;
   }
 }

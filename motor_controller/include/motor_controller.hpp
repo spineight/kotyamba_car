@@ -16,12 +16,14 @@ namespace kotyamba {
    */
     MotorController(char direction_pin_0, char direction_pin_1, char speed_pin, size_t pwm_range, size_t frequency);
     ~MotorController();
-    enum Direction {FORWARD, BACKWARD};
-    void rotate(double duty_cycle, Direction d);
+
+    enum State {NO_ROTATION, FORWARD_ROTATION, BACKWARD_ROTATION} state;
+    void rotate(double duty_cycle, State new_state);
     void stop();
     void emergency_stop();
 
     char direction_pin_0, direction_pin_1, speed_pin;
     size_t pwm_range, frequency;
+
   };
 };
