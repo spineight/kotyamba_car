@@ -134,7 +134,6 @@ namespace kotyamba {
       std::cerr << "PI_BAD_DUTYCYCLE\n";
       exit(1);
     }
-//    std::cout << pwm_range * duty_cycle << '\n';
   }
 
   void MotorController::stop() {
