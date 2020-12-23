@@ -23,3 +23,8 @@ How to release
             git tag -a -f <tag> <tag>
             git push --force origin
             git push --tags
+
+#### GUI for history of commits
+```bash
+sudo apt install gitk
+```

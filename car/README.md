@@ -17,3 +17,9 @@ add this line:
 to start bluetoothctl service and connect to the joystick with MAC address 1C:A0:B8:E4:ED:76
 2. sleep 30 - wait enough time for the connection to be established
 3. start test_car application
+
+
+### running
+```bash
+sudo taskset -c 2,3 ./car/test_car
+```
